@@ -1,0 +1,24 @@
+body {
+    background-image: url(../images/trainBackground.jpg);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+} 
+
+
+.jumbotron {
+    background: #61e2a4;
+    color: #ffffff;
+}
+
+.card {
+    padding: 10px;
+    margin: 40px;
+    border: 5px solid #61e2a4;
+    opacity: .9;
+
+}
+
+.card-header {
+    background: #52d897;
+    color: #ffffff5d;
+}
