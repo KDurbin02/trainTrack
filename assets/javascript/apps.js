@@ -1,23 +1,40 @@
 //create math function to update next arrival time
-//add firebase
+//add to local storage
 
-var freq = 0
-var firstT = "00:00";
-var nextTrain;
-var tMinutesTillTrain;
 
-// trainTime = {
-//  freq: 0,
-//  firstT: "00:00",
-//  firstTimeConverted: moment(firstT, "hh:mm").subtract(1, "years"),
-//  currentTime: moment(),
-//  diffTime: moment().diff(moment(firstTimeConverted), "minutes"),
-//  tRemainder: diffTime % freq,
-//  tMinutesTillTrain: freq - tRemainder,
-// //console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
-//  nextTrain: moment().add(tMinutesTillTrain, "minutes"),
-// //console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
-// }
+
+class train {
+  constructor(name, destination, freq, firstTT) {
+   this.name = name;
+   this.destination = destination;
+   this.freq = freq;
+   this.firstTT = firstTT;
+   this.firstTimeConverted = moment(this.firstTT, "H:mm").subtract(1, "years");
+  console.log(this.firstTimeConverted.format("hh:mm a"));}
+  }   
+
+function nextArrival(firstTimeConverted, freq) {
+ diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+ tRemainder = diffTime % freq;
+ console.log(diffTime + "   " +tRemainder + "   " + freq);
+ tMinutesTillTrain = freq - tRemainder;
+ nextTrain = moment().add(tMinutesTillTrain, "minutes").format("hh:mm");
+ 
+return [tMinutesTillTrain, nextTrain];
+}
+var hogwarts = new train("Hogwarts Express", "Hogwarts", 65, 145);
+
+function add () {
+  var trainData = nextArrival(hogwarts.firstTimeConverted);
+  $("#nextH").append(trainData[0]);
+  console.log(trainData[0]);
+
+}
+add();
+   
+ 
+//console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
+//console.log("ARRIVAL TIME: " + moment(nextTrain));
 
 // function hogwarts () {
 //   trainTime.freq = 65;
@@ -46,37 +63,34 @@ var tMinutesTillTrain;
   var name = "";
   var place = "";
   var frequency = "";
+  var first = "";
 
   $("#submit").on("click", function(){
     event.preventDefault();
     name = $("#trainName").val().trim();
-    place = $("#destination").val().trim();
-    frequency = $("#frequency").val().trim();
+    destination = $("#destination").val().trim();
+    freq = $("#frequency").val().trim();
+    firstTT = $("#firstTrain").val().trim();
+    var newTrain = new train(name, destination, freq, firstTT);
+    var trainData = nextArrival(newTrain.firstTimeConverted, freq);
 
     database.ref().set({
       train: name,
-      destination: place,
-      frequency: frequency
-      
+      destination: destination,
+      frequency: freq,
+      firstTrain: firstTT
     });
-  });
-
-  $("#submit").on("click", function(event) {
-    event.preventDefault();
-    var newTrain = $("#trainName").val();
-    var newDestination = $("#destination").val();
-    var newFirst = $("#firstTrain").val();
-    var newFrequency = $("#frequency").val();
     $("#trainTable > tbody:last-child").append(
       '<tr>'
-      +'<th>' +newTrain+ '</th>' 
-      +'<td>' +newDestination+ '</td>' 
-      +'<td>' +newFrequency+ '</td>' 
-      +'<td>' +''+ '</td>' 
-      +'<td>' +''+ '</td'
+      +'<th>' +name+ '</th>' 
+      +'<td>' +destination+ '</td>' 
+      +'<td>' +freq+ '</td>' 
+      +'<td>' +trainData[1]+ '</td>' 
+      +'<td>' +trainData[0]+ '</td'
       +'</tr>'
     );
     $("#form")[0].reset();//reset form after each use
-  });//add new train to table
+
+  });//add new train to firebase
 
 

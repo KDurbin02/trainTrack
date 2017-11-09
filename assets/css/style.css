@@ -5,15 +5,16 @@ body {
 } 
 
 
-.jumbotron {
-    background: #61e2a4;
+#header {
+    background: #962047;
     color: #ffffff;
+    opacity: .88;
 }
 
 .card {
     padding: 10px;
     margin: 40px;
-    border: 5px solid #61e2a4;
+    border: 5px solid #962047;
     opacity: .9;
 
 }
